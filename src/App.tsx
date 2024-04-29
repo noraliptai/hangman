@@ -3,16 +3,19 @@ import words from "./wordList.json"
 import { HangmanDrawing } from "./components/HangmanDrawing"
 import { Word } from "./components/Word"
 import { Keyboard } from "./components/Keyboard"
+import "./App.css"
 
-  const newWord = () => {
-    return words[Math.floor(Math.random() * words.length)]
-  }
+const newWord = () => {
+  return words[Math.floor(Math.random() * words.length)]
+}
 
 function App() {
 
   const [wordToGuess, setWordToGuess] = useState(newWord())
   
   const [guessedLetters, setGuessedLetters] = useState<string[]>([])
+
+  const [darkTheme, setDarkTheme] = useState(false)
 
   const incorrectLetters = guessedLetters.filter(letter => !wordToGuess.includes(letter))
 
@@ -61,13 +64,20 @@ function App() {
         flexDirection: "column",
         gap: "2rem",
         margin: "0 auto",
-        alignItems: "center"
+        padding: "10px",
+        alignItems: "center",
+        backgroundColor: darkTheme ? "#1d1d1d" : "#e0e0e0"
       }}>
-        <div style={{fontSize: "2rem", textAlign: "center"}}>{isWinner && "Congrats, you won! Refresh to try again"}{isLoser && "Sadly you lost. Refresh to try again"}</div>
-        <HangmanDrawing numberOfGuesses={incorrectLetters.length}/>
-        <Word wordToGuess={wordToGuess} guessedLetters={guessedLetters} reveal={isLoser} />
+        <button onClick={() => setDarkTheme(theme => !theme)} style={{backgroundColor: "#e0e0e0", padding: "10px", borderRadius: "10px", cursor: "pointer"}}>Change theme</button>
+
+        <div style={{fontSize: "1.5rem", textAlign: "center", fontFamily: "monospace", color: darkTheme ? "#e0e0e0" : "black"}}>{isWinner && "Congrats, you won!"} {isLoser && "Sadly you lost."} {(isWinner || isLoser) && <span style={{fontSize: "1rem"}}>Refresh page or press enter to play again</span>}</div>
+        
+        <HangmanDrawing numberOfGuesses={incorrectLetters.length} darkTheme={darkTheme}/>
+        
+        <Word wordToGuess={wordToGuess} guessedLetters={guessedLetters} reveal={isLoser} darkTheme={darkTheme}/>
+        
         <div style={{alignSelf: "stretch"}}>
-          <Keyboard activeLetters={guessedLetters.filter(letter => wordToGuess.includes(letter))} inactiveLetters={incorrectLetters} addGuessedLetters={addGuessedLetters} disabled={isWinner || isLoser} />
+          <Keyboard activeLetters={guessedLetters.filter(letter => wordToGuess.includes(letter))} inactiveLetters={incorrectLetters} addGuessedLetters={addGuessedLetters} disabled={isWinner || isLoser}/>
         </div>
       </div>
     </>

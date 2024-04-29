@@ -11,12 +11,16 @@ type KeyboardProps = {
 
 export function Keyboard({ activeLetters, inactiveLetters, disabled=false, addGuessedLetters}: KeyboardProps) {
     
-    return <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(75px, 1fr)", gap: ".5rem"}}>
+    return <div style={{display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(50px, 0.5fr)", gap: ".5rem"}}>
         {keys.map(key => {
             const isActive = activeLetters.includes(key)
             const isInactive = inactiveLetters.includes(key)
             return (
-                <button onClick={() => addGuessedLetters(key)} className={`${styles.btn} ${isActive ? styles.active : ""} ${isInactive ? styles.inactive : ""}`} disabled={isActive || isInactive || disabled} key={key}>{key}</button>
+                <button
+                    onClick={() => addGuessedLetters(key)}
+                    className={`${styles.btn} ${isActive ? styles.active : ""} ${isInactive ? styles.inactive : ""}`} disabled={isActive || isInactive || disabled}
+                    key={key}
+                >{key}</button>
             )
         })}
     </div>
