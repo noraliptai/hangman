@@ -5,22 +5,25 @@ import { Word } from "./components/Word"
 import { Keyboard } from "./components/Keyboard"
 import "./App.css"
 
-const newWord = () => {
-  return words[Math.floor(Math.random() * words.length)]
-}
 
 function App() {
+  
+  const newWord = (category: string) => {
+    return words[parseInt(category)][Math.floor(Math.random() * words[parseInt(category)].length)]
+  }
+  const [category, setCategory] = useState("0")
 
-  const [wordToGuess, setWordToGuess] = useState(newWord())
+  const [wordToGuess, setWordToGuess] = useState(newWord(category))
   
   const [guessedLetters, setGuessedLetters] = useState<string[]>([])
 
   const [darkTheme, setDarkTheme] = useState(false)
 
-  const incorrectLetters = guessedLetters.filter(letter => !wordToGuess.includes(letter))
+  
+  const incorrectLetters = guessedLetters.filter(letter => !wordToGuess.toLowerCase().includes(letter))
 
   const isLoser = incorrectLetters.length >= 6
-  const isWinner = wordToGuess.split("").every(letter => guessedLetters.includes(letter))
+  const isWinner = wordToGuess.split("").every(letter => guessedLetters.includes(letter.toLowerCase()) || letter === " ")
 
   const addGuessedLetters = useCallback((letter: string) => {
     if (guessedLetters.includes(letter) || isWinner || isLoser) return
@@ -46,7 +49,7 @@ function App() {
       if (e.key !== "Enter") return
       e.preventDefault()
       setGuessedLetters([])
-      setWordToGuess(newWord())
+      setWordToGuess(newWord(category))
     }
 
     document.addEventListener("keypress", handler)
@@ -54,7 +57,7 @@ function App() {
     return () => {
       document.removeEventListener("keypress", handler)
     }
-  }, [])
+  }, [category])
 
   return (
     <>
@@ -69,14 +72,27 @@ function App() {
       }}>
         <button onClick={() => setDarkTheme(theme => !theme)} style={{backgroundColor: "#e0e0e0", padding: "10px", borderRadius: "10px", cursor: "pointer"}}>Change theme</button>
 
+        <p>Choose a category: </p>
+        <select id="category" onChange={(e) => {
+          setCategory(e.target.value)
+          setGuessedLetters([])
+          setWordToGuess(newWord(e.target.value))
+          }}>
+          <option value="0">General</option>
+          <option value="1">Animals</option>
+          <option value="2">Countries</option>
+          <option value="3">Food</option>
+          <option value="4">Movies</option>
+        </select>
+
         <div style={{fontSize: "1.5rem", textAlign: "center", fontFamily: "monospace", color: darkTheme ? "#e0e0e0" : "black"}}>{isWinner && "Congrats, you won!"} {isLoser && "Sadly you lost."} {(isWinner || isLoser) && <span style={{fontSize: "1rem"}}>Refresh page or press enter to play again</span>}</div>
         
         <HangmanDrawing numberOfGuesses={incorrectLetters.length} darkTheme={darkTheme}/>
         
-        <Word wordToGuess={wordToGuess} guessedLetters={guessedLetters} reveal={isLoser} darkTheme={darkTheme}/>
+        <Word wordToGuess={wordToGuess.toLowerCase()} guessedLetters={guessedLetters} reveal={isLoser} darkTheme={darkTheme}/>
         
         <div style={{alignSelf: "stretch"}}>
-          <Keyboard activeLetters={guessedLetters.filter(letter => wordToGuess.includes(letter))} inactiveLetters={incorrectLetters} addGuessedLetters={addGuessedLetters} disabled={isWinner || isLoser}/>
+          <Keyboard activeLetters={guessedLetters.filter(letter => wordToGuess.toLowerCase().includes(letter))} inactiveLetters={incorrectLetters} addGuessedLetters={addGuessedLetters} disabled={isWinner || isLoser}/>
         </div>
       </div>
     </>
