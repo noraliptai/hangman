@@ -65,7 +65,7 @@ function App() {
         margin: "0 auto",
         padding: "10px",
         alignItems: "center",
-        backgroundColor: darkTheme ? "#1d1d1d" : "#e0e0e0"
+        backgroundColor: darkTheme ? "#1d1d1d" : "#f9f9f9"
       }}>
         <div style={{
           display: "flex",
@@ -77,7 +77,7 @@ function App() {
           <button
             onClick={() => setDarkTheme(theme => !theme)}
             style={{
-              backgroundColor: "#e0e0e0",
+              backgroundColor: "#f9f9f9",
               padding: "10px",
               borderRadius: "10px",
               cursor: "pointer"
@@ -88,13 +88,12 @@ function App() {
             flexDirection: "column",
             justifyContent: "center",
             gap: "5px"}}>
-            
-            <p style={{color: darkTheme ? "#e0e0e0" : "black"}}>Choose a category: </p>
-            
+                        
             <select
               id="category"
+              defaultValue="Choose category"
               style={{
-                padding: "5px",
+                padding: "10px",
                 borderRadius: "10px",
                 cursor: "pointer"}}
               onChange={(e) => {
@@ -102,6 +101,7 @@ function App() {
                 setGuessedLetters([])
                 setWordToGuess(newWord(e.target.value))
               }}>
+              <option disabled>Choose category</option>
               <option value="0">General</option>
               <option value="1">Animals</option>
               <option value="2">Countries</option>
