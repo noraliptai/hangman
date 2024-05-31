@@ -7,7 +7,7 @@ type HangmanDrawingProps = {
 export function HangmanDrawing({ numberOfGuesses, darkTheme=false }: HangmanDrawingProps) {
 
     const head = (
-        <div style={{width: "25px", height: "25px", borderRadius: "100%", border: `5px solid ${darkTheme ? "#e0e0e0" : "#1d1d1d"}`, position: "absolute", top: "25px", right: "-15px"}}/>
+        <div style={{width: "25px", height: "25px", borderRadius: "100%", border: `5px solid ${darkTheme ? "#e0e0e0" : "#1d1d1d"}`, boxSizing: "content-box", position: "absolute", top: "25px", right: "-15px"}}/>
     )
 
     const body = (
@@ -15,11 +15,11 @@ export function HangmanDrawing({ numberOfGuesses, darkTheme=false }: HangmanDraw
     )
 
     const rightArm = (
-        <div style={{width: "50px", height: "5px", background: darkTheme ? "#e0e0e0" : "#1d1d1d", position: "absolute", top: "75px", right: "-50px", rotate: "-30deg", transformOrigin: "left bottom"}}/>
+        <div style={{width: "45px", height: "5px", background: darkTheme ? "#e0e0e0" : "#1d1d1d", position: "absolute", top: "70px", right: "-40px", rotate: "40deg", transformOrigin: "left bottom"}}/>
     )
     
     const leftArm = (
-        <div style={{ width: "50px", height: "5px", background: darkTheme ? "#e0e0e0" : "#1d1d1d", position: "absolute", top: "75px", right: "5px", rotate: "30deg", transformOrigin: "right bottom"}}/>
+        <div style={{ width: "45px", height: "5px", background: darkTheme ? "#e0e0e0" : "#1d1d1d", position: "absolute", top: "70px", right: "0", rotate: "-40deg", transformOrigin: "right bottom"}}/>
     )
 
     const rightLeg = (

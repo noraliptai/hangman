@@ -65,6 +65,8 @@ function App() {
         margin: "0 auto",
         padding: "10px",
         alignItems: "center",
+        justifyContent: "space-evenly",
+        minHeight: "100vh",
         backgroundColor: darkTheme ? "#1d1d1d" : "#f9f9f9"
       }}>
         <div style={{
@@ -81,7 +83,7 @@ function App() {
               padding: "10px",
               borderRadius: "10px",
               cursor: "pointer"
-              }}>Change theme</button>
+              }}>{darkTheme ? "Light mode" : "Dark mode"}</button>
           
           <div style={{
             display: "flex",
