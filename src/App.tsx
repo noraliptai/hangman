@@ -15,11 +15,12 @@ function App() {
   const [category, setCategory] = useState("0")
   const [wordToGuess, setWordToGuess] = useState(newWord(category))
   const [guessedLetters, setGuessedLetters] = useState<string[]>([])
-  const [darkTheme, setDarkTheme] = useState(false)
+  const [darkTheme, setDarkTheme] = useState(true)
+  const [difficulty, setDifficulty] = useState("easy")
   
   const incorrectLetters = guessedLetters.filter(letter => !wordToGuess.includes(letter))
 
-  const isLoser = incorrectLetters.length >= 6
+  const isLoser = difficulty === "hard" ? incorrectLetters.length >= 6 : difficulty === "medium" ? incorrectLetters.length >= 8 : incorrectLetters.length >= 10
   const isWinner = wordToGuess.split("").every(letter => guessedLetters.includes(letter) || letter === " ")
 
   const addGuessedLetters = useCallback((letter: string) => {
@@ -85,33 +86,56 @@ function App() {
               cursor: "pointer"
               }}>{darkTheme ? "Light mode" : "Dark mode"}</button>
           
-          <div style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: "5px"}}>
+          <button
+            onClick={() => {
+              setGuessedLetters([])
+              setWordToGuess(newWord(category))
+            }}
+            style={{
+              backgroundColor: "#f9f9f9",
+              padding: "10px",
+              borderRadius: "10px",
+              cursor: "pointer"
+              }}>New word</button>
                         
-            <select
-              id="category"
-              defaultValue="Choose category"
-              style={{
-                padding: "10px",
-                borderRadius: "10px",
-                cursor: "pointer"}}
-              onChange={(e) => {
-                setCategory(e.target.value)
-                setGuessedLetters([])
-                setWordToGuess(newWord(e.target.value))
-              }}>
-              <option disabled>Choose category</option>
-              <option value="0">General</option>
-              <option value="1">Animals</option>
-              <option value="2">Countries</option>
-              <option value="3">Food</option>
-              <option value="4">Movies</option>
-            </select>
+          <select
+            id="category"
+            defaultValue="Choose category"
+            style={{
+              padding: "10px",
+              borderRadius: "10px",
+              cursor: "pointer"}}
+            onChange={(e) => {
+              setCategory(e.target.value)
+              setGuessedLetters([])
+              setWordToGuess(newWord(e.target.value))
+            }}>
+            <option disabled>Choose category</option>
+            <option value="0">General</option>
+            <option value="1">Animals</option>
+            <option value="2">Countries</option>
+            <option value="3">Food</option>
+            <option value="4">Movies</option>
+            <option value="5">Famous people</option>
+          </select>
 
-          </div>
+          <select
+            id="difficulty"
+            defaultValue="Choose difficulty"
+            style={{
+              padding: "10px",
+              borderRadius: "10px",
+              cursor: "pointer"}}
+            onChange={(e) => {
+              setDifficulty(e.target.value)
+              setGuessedLetters([])
+              setWordToGuess(newWord(category))
+            }}>
+            <option disabled>Choose difficulty</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
 
         </div>
 
@@ -127,7 +151,7 @@ function App() {
           {(isWinner || isLoser) && <span style={{fontSize: "1rem"}}>Refresh page or press enter to play again</span>}
         </div>
         
-        <HangmanDrawing numberOfGuesses={incorrectLetters.length} darkTheme={darkTheme}/>
+        <HangmanDrawing numberOfGuesses={incorrectLetters.length} darkTheme={darkTheme} difficulty={difficulty}/>
         
         <Word wordToGuess={wordToGuess} guessedLetters={guessedLetters} reveal={isLoser} darkTheme={darkTheme}/>
         

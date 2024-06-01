@@ -4,6 +4,20 @@ Tools: Typescript, React, Vite
 
 Inspired by webdevsimplified
 
+Working features:
+- Basic game
+- Choose word category
+- Choose difficulty
+- Dark mode / Light mode
+- New word button
+
+Planned features:
+- Refactor / clean up code (separate Heading component, put styling in separate CSS)
+- Style header, add title / instructions
+- Add more categories (e.g., books, aphorisms)
+- Animate hangman drawing
+- Scoring system
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
